@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'mainscreen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,7 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
+      title: 'Wisata Bandung',
+      home: MainScreen(),
     );
   }
 }
