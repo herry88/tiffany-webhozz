@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'detail_screen.dart';
 import 'model/tourism_place.dart';
 
 class MainScreen extends StatelessWidget {
@@ -15,7 +16,11 @@ class MainScreen extends StatelessWidget {
           return InkWell(
             onTap: () {
               //tap muncul detailscreen
-              print('tulisan ini akan muncul di console');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(place: place),
+                ),
+              );
             },
             child: Card(
               child: Row(
