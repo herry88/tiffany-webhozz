@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'adddata.dart';
+import 'detailpage.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -74,7 +75,11 @@ class ItemList extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              print('akan tampil jika di tekan');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(),
+                ),
+              );
             },
             child: Card(
               child: ListTile(
