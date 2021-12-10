@@ -77,7 +77,7 @@ class ItemList extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DetailPage(),
+                  builder: (context) => DetailPage(list:list, index:index),
                 ),
               );
             },
