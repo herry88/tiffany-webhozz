@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class DetailPage extends StatefulWidget {
   List? list;
@@ -10,6 +11,17 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  //function delete
+  void deleteData() async {
+    await http.post(
+        Uri.parse(
+          "https://herryprasetyo.my.id/latihan/deletedata.php",
+        ),
+        body: {
+          'id': widget.list![widget.index]['id'].toString(),
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +58,7 @@ class _DetailPageState extends State<DetailPage> {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
                   ),
-                  child:const Text('Delete'),
+                  child: const Text('Delete'),
                 ),
               ],
             ),
