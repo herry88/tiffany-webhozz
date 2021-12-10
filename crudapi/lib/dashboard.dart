@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'adddata.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -10,13 +13,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   //buat function get data
-  getData() async {
+  Future<List>? getData() async {
     final response = await http.get(
       Uri.parse(
-        'https://herryprasetyo.my.id/latihan/get_data.php',
+        "https://herryprasetyo.my.id/latihan/get_data.php",
       ),
     );
-    print(response.body);
+    // print(response.body);
+    return json.decode(response.body);
   }
 
   @override
@@ -32,12 +36,19 @@ class _DashboardState extends State<Dashboard> {
         title: const Text('my store'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          //untuk redirect ke page addData
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddData(),
+            ),
+          );
+        },
         child: Icon(
           Icons.add,
         ),
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<List>(
         future: getData(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
@@ -58,6 +69,23 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView.builder(
+        itemCount: list == null ? 0 : list!.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              print('akan tampil jika di tekan');
+            },
+            child: Card(
+              child: ListTile(
+                title: Text(list![index]['item_name']),
+                leading: const Icon(
+                  Icons.widgets,
+                ),
+                subtitle: Text("Stock :${list![index]['stock']}"),
+              ),
+            ),
+          );
+        });
   }
 }
