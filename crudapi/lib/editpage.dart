@@ -1,13 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class EditPage extends StatefulWidget {
-  const EditPage({Key? key}) : super(key: key);
+  List? list;
+  int index;
+  EditPage({this.list, required this.index});
 
   @override
   _EditPageState createState() => _EditPageState();
 }
 
 class _EditPageState extends State<EditPage> {
+  //deklarasi form
+  TextEditingController controllerCode = TextEditingController();
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerPrice = TextEditingController();
+  TextEditingController controllerStock = TextEditingController();
+
+  void editData() {
+    var url = "https://herryprasetyo.my.id/latihan/editdata.php";
+    http.post(Uri.parse(url), body: {
+      "id": widget.list![widget.index]['id'],
+      "itemcode": controllerCode.text,
+      "itemname": controllerName.text,
+      "price": controllerPrice.text,
+      "stock": controllerStock.text
+    });
+  }
+
+  //ambil data
+  @override
+  void initState() {
+    controllerCode =
+        TextEditingController(text: widget.list![widget.index]['item_code']);
+    controllerName = TextEditingController(
+      text: widget.list![widget.index]['item_name'],
+    );
+    controllerPrice =
+        TextEditingController(text: widget.list![widget.index]['price']);
+    controllerStock =
+        TextEditingController(text: widget.list![widget.index]['stock']);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +56,7 @@ class _EditPageState extends State<EditPage> {
             Column(
               children: [
                 TextField(
+                  controller: controllerCode,
                   decoration: InputDecoration(
                     hintText: "ItemCode ",
                     labelText: "ItemCode",
@@ -46,7 +82,9 @@ class _EditPageState extends State<EditPage> {
                 ),
                 ElevatedButton(
                   child: Text('Edit'),
-                  onPressed: () {},
+                  onPressed: () {
+                    editData();
+                  },
                 )
               ],
             )
