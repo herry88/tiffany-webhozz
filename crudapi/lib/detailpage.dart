@@ -1,5 +1,8 @@
+import 'package:crudapi/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'editpage.dart';
 
 class DetailPage extends StatefulWidget {
   List? list;
@@ -22,6 +25,49 @@ class _DetailPageState extends State<DetailPage> {
         });
   }
 
+  //function confirmation delete data
+  void confirm() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            'Apakah anda yakin untuk delete ? ${widget.list![widget.index]['item_name']}',
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                //delete function
+                deleteData();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Dashboard(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.check_circle),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                //non redirect
+                Navigator.of(context).pop();
+              },
+              child: const Icon(
+                Icons.cancel,
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +78,12 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
       body: Container(
+        height: 200.0,
         child: Card(
+          elevation: 5.0,
+          margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           child: Center(
             child: Column(
               children: [
@@ -53,13 +104,33 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                  ),
-                  child: const Text('Delete'),
-                ),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditPage(),
+                          ),
+                        );
+                      },
+                      child: Text('Edit Data'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.greenAccent,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        //function delete
+                        confirm();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                      ),
+                      child: const Text('Delete'),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
