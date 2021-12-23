@@ -1,8 +1,8 @@
 import 'package:appnews/models/category_model.dart';
 
-List<CategoryModel>? getCategories() {
+List<CategoryModel> getCategories() {
   //buat variabel menampung per category
-  List<CategoryModel>? myCategories = <CategoryModel>[];
+  List<CategoryModel> myCategories = <CategoryModel>[];
   CategoryModel categoryModel;
 
   //1
