@@ -1,4 +1,7 @@
 import 'package:appnews/helper/data.dart';
+import 'package:appnews/helper/news.dart';
+import 'package:appnews/helper/widgets.dart';
+import 'package:appnews/models/article_model.dart';
 import 'package:appnews/models/category_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late bool _loading;
+  late bool _loading;
+  //data category
   List<CategoryModel> categories = <CategoryModel>[];
+  //data news
+  List<ArticleModel> newsList = <ArticleModel>[];
+
+  //get function news
+  void getNews() async {
+    News news = News();
+    await news.getNews();
+    newsList = news.news;
+    setState(() {
+      _loading = false;
+    });
+  }
+
   @override
   void initState() {
-    // _loading = true;
     categories = getCategories();
+    getNews();
+    setState(() {
+      _loading = true;
+    });
     super.initState();
   }
 
@@ -47,28 +67,48 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  height: 70.0,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return CategoryCard(
-                        imageAssetUrl: categories[index].imageasseturl,
-                        categoryName: categories[index].categoryname,
-                      );
-                    },
+        child: _loading
+            ? const Center(
+                child: Text('Data Loading...'),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        height: 70.0,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return CategoryCard(
+                              imageAssetUrl: categories[index].imageasseturl,
+                              categoryName: categories[index].categoryname,
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(
+                          top: 16.0,
+                        ),
+                        child: ListView.builder(
+                          itemCount: newsList.length,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return NewsTile(
+                              imgUrl: newsList[index].urlToImage.toString(),
+                              title: newsList[index].title.toString(),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
+                ),
+              ),
       ),
     );
   }
