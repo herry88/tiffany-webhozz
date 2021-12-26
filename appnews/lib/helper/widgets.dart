@@ -1,3 +1,4 @@
+import 'package:appnews/views/article_view.dart';
 import 'package:flutter/material.dart';
 
 class NewsTile extends StatelessWidget {
@@ -18,7 +19,9 @@ class NewsTile extends StatelessWidget {
         //detail article
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ArticleView(),
+            builder: (context) => ArticleView(
+              postUrl : postUrl,
+            ),
           ),
         );
       },
