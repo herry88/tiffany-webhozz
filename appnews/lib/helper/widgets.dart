@@ -1,15 +1,19 @@
+import 'package:appnews/views/article_view.dart';
 import 'package:flutter/material.dart';
 
 class NewsTile extends StatelessWidget {
-  final String? imgUrl, title, desc, content, postUrl;
-  NewsTile({
-    Key? key,
-    this.imgUrl,
-    this.title,
-    this.desc,
-    this.content,
-    this.postUrl,
-  }) : super(key: key);
+  String? imgUrl, title, desc, content, postUrl, author;
+  DateTime? publishedAt;
+  NewsTile(
+      {Key? key,
+      this.imgUrl,
+      this.title,
+      this.desc,
+      this.content,
+      this.postUrl,
+      this.author,
+      this.publishedAt})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,12 @@ class NewsTile extends StatelessWidget {
         //detail article
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ArticleView(),
+            builder: (context) => ArticleView(
+              imgUrl: imgUrl,
+              title: title,
+              publishedAt: publishedAt,
+              author:author,
+            ),
           ),
         );
       },
