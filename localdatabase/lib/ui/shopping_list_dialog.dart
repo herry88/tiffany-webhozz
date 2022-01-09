@@ -9,6 +9,11 @@ class ShoppingListDialog {
   final txtPriority = TextEditingController();
 
   Widget buildDialog(BuildContext context, ShoppingList list, bool isNew) {
+    DbHelper helper = DbHelper();
+    if(!isNew){
+      txtName.text = list.name; 
+      txtPriority.text = list.priority.toString();
+    }
     return AlertDialog(
       title: Text(
         (isNew) ? 'New Shopping List' : 'Edit Shopping List',
@@ -35,7 +40,13 @@ class ShoppingListDialog {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                list.name = txtName.text;
+                list.priority = int.parse(txtPriority.text);
+                helper.insertList(list);
+                Navigator.pop(context);
+
+              },
               child: Text('Save Shopping List'),
             ),
           ],
