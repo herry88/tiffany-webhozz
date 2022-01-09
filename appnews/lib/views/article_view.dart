@@ -1,16 +1,17 @@
-import 'dart:async';
-import 'dart:html';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class ArticleView extends StatefulWidget {
-  String? imgUrl, title;
+  final String? imgUrl, title, author;
+  DateTime? publishedAt;
   ArticleView({
     Key? key,
     this.imgUrl,
     this.title,
+    this.author,
+    this.publishedAt,
   }) : super(key: key);
 
   @override
@@ -18,8 +19,6 @@ class ArticleView extends StatefulWidget {
 }
 
 class _ArticleViewState extends State<ArticleView> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +87,139 @@ class _ArticleViewState extends State<ArticleView> {
             left: 20.0,
             right: 20.0,
             child: Row(
-              children: [],
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 40.0,
+                    width: 40.0,
+                    padding: const EdgeInsets.only(left: 5.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        height: 40.0,
+                        width: 40.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.bookmark_border,
+                            color: Colors.black38,
+                            size: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        height: 40.0,
+                        width: 40.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.share,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: 20.0,
+                bottom: 50.0,
+                right: 20.0,
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    widget.title.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    widget.author.toString(),
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.48,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  20.0,
+                ),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 30.0,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    widget.title.toString(),
+                    style:const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14.0,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
