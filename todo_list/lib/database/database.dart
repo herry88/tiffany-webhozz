@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:todo_list/model/notelist.dart';
 
 class DataBaseHelper {
@@ -55,5 +54,38 @@ class DataBaseHelper {
     });
     noteList.sort((noteA, noteB) => noteA.date!.compareTo(noteB.date!));
     return noteList;
+  }
+
+  //insert
+  Future<int> insertNote(Note note) async {
+    Database? db = await this.db;
+    final int result = await db!.insert(
+      noteTable,
+      note.toMap(),
+    );
+    return result;
+  }
+
+  //update
+  Future<int> updateNote(Note note) async {
+    Database? db = await this.db;
+    final int result = await db!.update(
+      noteTable,
+      note.toMap(),
+      where: '$colId = ?',
+      whereArgs: [note.id],
+    );
+    return result;
+  }
+
+  //delete
+  Future<int> deleteNote(int id) async {
+    Database? db = await this.db;
+    final int result = await db!.delete(
+      noteTable,
+      where: '$colId = ?',
+      whereArgs: [id],
+    );
+    return result;
   }
 }
