@@ -50,8 +50,18 @@ class _ShlistState extends State<Shlist> {
         itemBuilder: (context, index) {
           return Dismissible(
             key: Key(shoppingList[index].name),
-            onDismissed: (directoion) {
+            onDismissed: (direction) {
               //function delete
+              String strName = shoppingList[index].name;
+              helper.deleteList(shoppingList[index]);
+              setState(() {
+                shoppingList.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$strName deleted'),
+                ),
+              );
             },
             child: ListTile(title: Text(shoppingList[index].name)),
           );
