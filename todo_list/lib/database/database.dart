@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:todo_list/model/notelist.dart';
 
 class DataBaseHelper {
   static final DataBaseHelper instance = DataBaseHelper._instance();
@@ -38,10 +39,21 @@ class DataBaseHelper {
         'CREATE TABLE $noteTable($colId, INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT, $colPriority TEXT, $colStatus INTEGER)');
   }
 
-  //get Notetable
+  //get NotetableMap
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
     Database? db = await this.db;
     final List<Map<String, dynamic>> result = await db!.query(noteTable);
     return result;
+  }
+
+  //get notetable list
+  Future<List<Note>> getNoteList() async {
+    final List<Map<String, dynamic>> noteMapList = await getNoteMapList();
+    final List<Note> noteList = [];
+    noteMapList.forEach((noteMap) {
+      noteList.add(Note.fromMap(noteMap));
+    });
+    noteList.sort((noteA, noteB) => noteA.date!.compareTo(noteB.date!));
+    return noteList;
   }
 }
